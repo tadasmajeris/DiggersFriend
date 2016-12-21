@@ -1,0 +1,19 @@
+/* CSS declarations go here */
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+a, p, h1, h2, h3, h4, h5, h6, span, div, input, textarea, button, body {
+  font-family: "Josefin Sans", monospace;
+  color: white;
+}
+
+input, button {
+  background-color: transparent;
+}
+
+body {
+  background-color: #222;
+}
+
+footer {
+  margin-top: 50px;
+}
