@@ -1,9 +1,25 @@
 /* CSS declarations go here */
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+@import url('https://fonts.googleapis.com/css?family=Raleway:800|Passion+One:700|Josefin+Slab|Abel|Slabo+27px');
 
 a, p, h1, h2, h3, h4, h5, h6, span, div, input, textarea, button, body {
-  font-family: "Josefin Sans", monospace;
-  color: white;
+  font-family: "Abel", serif;
+  color: #eee;
+}
+
+header h1 {
+  font-family: "Raleway", serif;
+  font-size: 2.9em;
+  border-bottom: 1px dashed #555;
+  width: 350px;
+  margin: auto;
+}
+
+a, p, span, div, body {
+  color: #bebebe;
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 input, button {
@@ -12,8 +28,5 @@ input, button {
 
 body {
   background-color: #222;
-}
-
-footer {
-  margin-top: 50px;
+  text-align: center;
 }

@@ -1,0 +1,22 @@
+#discogs_login {
+  padding: 0 20px 21px 10px;
+  cursor: pointer;
+  border: 1px dotted #99651e;
+  font-size: 1em;
+}
+
+#discogs_login:hover {
+  border: 1px solid orange;
+  background-color: #47330a;
+}
+
+#discogs_login div {
+  display: inline-block;
+  color: white;
+}
+
+#login_div2 {
+  position: relative;
+  top: 15px;
+  left: 8px;
+}
