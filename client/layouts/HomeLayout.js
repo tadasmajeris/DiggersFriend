@@ -8,8 +8,7 @@ Template.HomeLayout.events({
       added: function(){
         Alerts.observer.stop();
         var alert = Alerts.findOne();
-        Meteor.call('clearAlerts');
-        console.log(alert.url);
+        Meteor.call('clearAlerts', alert.url);
         window.open(alert.url, '_self');
       }
     });
