@@ -47,6 +47,7 @@ Meteor.methods({
         var user = dis.user();
         dis.getIdentity(function(err, data){
           var username = data.username;
+          var wantlist = user.wantlist();  
         });
         // var wantlist = user.wantlist();
         // wantlist.getReleases()
