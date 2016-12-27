@@ -17,48 +17,40 @@ Meteor.methods({
       Meteor.bindEnvironment(function(err, requestData){
         // Persist "requestData" here so that the callback handler can
         // access it later after returning from the authorize url
-        // console.log(err);
-        // console.log(requestData);
         REQUEST_DATA = requestData;
-        Meteor.call('insertAlert', requestData.authorizeUrl);
+        Meteor.call('insertAlert', {url: requestData.authorizeUrl});
       })
     );
   },
 
-  'insertAlert'(url){
-    Alerts.insert({url: url})
+  'insertAlert'(data){
+    Alerts.insert(data)
   },
 
-  'clearAlerts'(url){
-    Alerts.remove({url: url});
+  'clearAlerts'(data){
+    Alerts.remove(data);
   },
 
   'getAccessToken'(params){
-    // console.log(params.oauth_token);
-    // console.log(params.oauth_verifier);
     var oAuth = new Discogs(REQUEST_DATA).oauth();
     oAuth.getAccessToken(
       params.oauth_verifier, // Verification code sent back by Discogs
-      function(err, accessData){
+      Meteor.bindEnvironment(function(err, accessData){
         // Persist "accessData" here for following OAuth calls
-        // res.send('Received access token!');
         var dis = new Discogs(accessData);
-        // console.log(accessData);
-        var user = dis.user();
-        dis.getIdentity(function(err, data){
-          var username = data.username;
-          var wantlist = user.wantlist();  
-        });
-        // var wantlist = user.wantlist();
-        // wantlist.getReleases()
-        // console.log(user);
-        // dis.getIdentity(function(err, data){
-          // console.log(err);
-          // console.log(data);
-        // });
-      }
+        dis.getIdentity(Meteor.bindEnvironment(function(err, data){
+          Meteor.call('insertAlert', {username: data.username});
+        }));
+      })
     );
+  },
 
+  'create.user'(username){
+    var existingUser = Meteor.users.findOne({username: username});
+    if (existingUser === undefined) {
+      Accounts.createUser({username: username, password: s.reverse(username)});
+    }
+    return username
   },
 
   'discogs.getRelease'(id){

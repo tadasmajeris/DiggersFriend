@@ -1,0 +1,32 @@
+#login-dropdown-list {
+  margin-left: -60px;
+  margin-top: -1px;
+  background-color: #222;
+  width: 150px;
+}
+#login-dropdown-list .login-close-text {
+  margin-left: 60px;
+  margin-top: -6px;
+  color: #aeaeae;
+}
+#login-dropdown-list .login-close-text:hover {
+  color: #dedede;
+}
+#login-buttons-open-change-password {
+  display: none;
+}
+#login-buttons-logout.login-button {
+  background-color: #222;
+  border: 1px dotted #99651e;
+}
+#login-buttons-logout.login-button:hover {
+  border: 1px solid orange;
+  background-color: #47330a;
+}
+.login-close-text, #login-dropdown-list, #login-name-link {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}

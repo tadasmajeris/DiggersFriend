@@ -24,6 +24,7 @@ a, p, span, div, body {
 
 a:hover {
   text-decoration: none;
+  color: #dedede;
 }
 
 input, button {
