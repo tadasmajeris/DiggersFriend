@@ -1,5 +1,5 @@
 Template.Wantlist.events({
   'click #importWantlist'(){
-    alert('import wantlist?')
+    Meteor.call('importWantlist', Meteor.user());
   }
 });

@@ -8,15 +8,13 @@ Meteor.startup(() => {
 });
 
 Meteor.methods({
-  'discogs.authorize'(){
+  'discogs.authorize'(host){
     var oAuth = new Discogs().oauth();
     oAuth.getRequestToken(
       Meteor.settings.discogsKey,
       Meteor.settings.discogsSecret,
-      'http://localhost:3000/callback',
+      `${host}callback`,
       Meteor.bindEnvironment(function(err, requestData){
-        // Persist "requestData" here so that the callback handler can
-        // access it later after returning from the authorize url
         REQUEST_DATA = requestData;
         Meteor.call('insertAlert', {url: requestData.authorizeUrl});
       })
@@ -36,7 +34,6 @@ Meteor.methods({
     oAuth.getAccessToken(
       params.oauth_verifier, // Verification code sent back by Discogs
       Meteor.bindEnvironment(function(err, accessData){
-        // Persist "accessData" here for following OAuth calls
         var dis = new Discogs(accessData);
         dis.getIdentity(Meteor.bindEnvironment(function(err, data){
           Meteor.call('insertAlert', {username: data.username, accessData: accessData});
@@ -57,6 +54,30 @@ Meteor.methods({
     return username
   },
 
+  'importWantlist'(user){
+    var accessData = getAccessData(user);
+    var wantlist = new Discogs(accessData).user().wantlist();
+    wantlist.getReleases(user.username, {per_page: 10}, Meteor.bindEnvironment(function(err, data){
+      Meteor.call('insertReleases', user, data.wants);
+      // if (data.pagination.pages > 1) {
+      //
+      // }
+      // console.log(data);
+      // console.log(data.wants[3]);
+    }))
+  },
+
+  'insertReleases'(user, releases){
+    releases.forEach(function(release){
+      var existingRelease = Releases.findOne({userId: user._id, discogsId: release.id});
+      if (existingRelease === undefined) {
+        var releaseInfo = extractReleaseInfo(user, release);
+        console.log(releaseInfo);
+        // Releases.insert(releaseInfo);
+      }
+    })
+  },
+
   'discogs.getRelease'(id){
     var dis = new Discogs({
       consumerKey: Meteor.settings.discogsKey,
@@ -68,4 +89,47 @@ Meteor.methods({
       console.log(data);
     });
   }
-})
+});
+
+function getAccessData(user){
+  return {
+    method: 'oauth',
+    level: 2,
+    consumerKey: Meteor.settings.discogsKey,
+    consumerSecret: Meteor.settings.discogsSecret,
+    token: user.profile.token,
+    tokenSecret: user.profile.tokenSecret
+  }
+}
+
+function extractReleaseInfo(user, release) {
+  var info = _.pick(release.basic_information, 'year', 'title', 'thumb');
+  info.label = _.pick(release.basic_information.labels[0], 'name', 'catno');
+  info.format = extractFormat(release.basic_information.formats[0]);
+  info.artists = extractArtists(release.basic_information.artists);
+  info.userId = user._id;
+  info.discogsId = release.id;
+  info.dateAdded = release.date_added;
+  return info
+}
+
+function extractArtists(artistsArray) {
+  var artists = [];
+  artistsArray.forEach(function(artist){
+    artists.push(artist.name);
+  });
+  return artists.join(' / ')
+}
+
+function extractFormat(format) {
+  var str = '';
+  if (format.qty > 1) {
+    str += format.qty + 'x';
+  }
+  if (format.name !== 'Vinyl') {
+    str += format.name
+  } else {
+    str += format.descriptions[0]
+  }
+  return str
+}
