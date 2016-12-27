@@ -1,0 +1,11 @@
+#wantlist_p {
+  margin-bottom: 5px;
+  margin-top: -3px;
+  color: #99651e;
+}
+#importWantlist {
+  padding: 5px;
+  display:flex;
+  margin: auto;
+  margin-top: 10px;
+}

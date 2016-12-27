@@ -36,6 +36,17 @@ body {
   text-align: center;
 }
 
+button {
+  cursor: pointer;
+  border: 1px dotted #99651e;
+  font-size: 1em;
+}
+
+button:hover {
+  border: 1px solid orange;
+  background-color: #47330a;
+}
+
 .MeteorToys {
   text-align: left;
 }

@@ -52,7 +52,7 @@ Meteor.methods({
     if (existingUser === undefined) {
       Accounts.createUser({ username: username, password: s.reverse(username), profile: aData });
     } else if (aData.token !== existingUser.profile.token) {
-      Meteor.users.update( {username: username}, $set: {profile: aData} );
+      Meteor.users.update( {username: username}, {$set: {profile: aData}} );
     }
     return username
   },
