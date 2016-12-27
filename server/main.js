@@ -39,16 +39,20 @@ Meteor.methods({
         // Persist "accessData" here for following OAuth calls
         var dis = new Discogs(accessData);
         dis.getIdentity(Meteor.bindEnvironment(function(err, data){
-          Meteor.call('insertAlert', {username: data.username});
+          Meteor.call('insertAlert', {username: data.username, accessData: accessData});
         }));
       })
     );
   },
 
-  'create.user'(username){
+  'create.user'(username, accessData){
     var existingUser = Meteor.users.findOne({username: username});
+    var aData = {token: accessData.token, tokenSecret: accessData.tokenSecret};
+
     if (existingUser === undefined) {
-      Accounts.createUser({username: username, password: s.reverse(username)});
+      Accounts.createUser({ username: username, password: s.reverse(username), profile: aData });
+    } else if (aData.token !== existingUser.profile.token) {
+      Meteor.users.update( {username: username}, $set: {profile: aData} );
     }
     return username
   },
