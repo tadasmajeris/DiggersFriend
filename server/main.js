@@ -47,6 +47,7 @@ Meteor.methods({
     var aData = {token: accessData.token, tokenSecret: accessData.tokenSecret};
 
     if (existingUser === undefined) {
+      aData.wantlistSorting = 'Added▼';
       Accounts.createUser({ username: username, password: s.reverse(username), profile: aData });
     } else if (aData.token !== existingUser.profile.token) {
       Meteor.users.update( {username: username}, {$set: {profile: aData}} );
@@ -55,6 +56,7 @@ Meteor.methods({
   },
 
   'importWantlist'(user){
+    updateWantlistSorting(user);
     var accessData = getAccessData(user);
     var wantlist = new Discogs(accessData).user().wantlist();
     wantlist.getReleases(user.username, {per_page: 100}, Meteor.bindEnvironment(function(err, data){

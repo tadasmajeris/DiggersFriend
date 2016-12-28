@@ -1,7 +1,7 @@
 #wantlist_p {
   margin-bottom: 5px;
   margin-top: -3px;
-  color: #99651e;
+  color: #a9651e;
 }
 #importWantlist {
   padding: 5px;
@@ -14,7 +14,7 @@
   list-style-type: none;
   padding: 0;
   min-width: 350px;
-  max-width: 450px;
+  max-width: 430px;
   margin: auto;
   margin-top: 20px;
   text-align: left;
@@ -39,10 +39,25 @@
   margin-bottom: 3px;
   border: none;
   text-align: center;
+  cursor:auto;
 }
+#wantlist_header .header_item:hover {
+  color: #eee;
+  cursor: pointer;
+}
+.selected_sort, .selected_sort .arrow {
+  color: orange;
+}
+
 .release_info {
   display: table-cell;
   vertical-align: middle;
+}
+.label_info {
+  color: #777;
+}
+.year_info {
+  color: #9f857f;
 }
 #wantlist_ul img {
   width: 50px;

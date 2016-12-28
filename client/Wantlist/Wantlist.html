@@ -4,7 +4,13 @@
 
   <ul id="wantlist_ul">
     {{#if anyWants}}
-      <div id="wantlist_header">Artist - Title (Label, Cat#), Format, Year, Added</div>
+      <div id="wantlist_header">
+        <span class="header_item {{selectedSort "Artist"}}">Artist<span class="arrow"></span></span> -
+        <span class="header_item {{selectedSort "Title"}}">Title<span class="arrow"></span></span>
+       (<span class="header_item {{selectedSort "Label"}}">Label<span class="arrow"></span></span>),
+        <span class="header_item {{selectedSort "Format"}}">Format<span class="arrow"></span></span>,
+        <span class="header_item {{selectedSort "Year"}}">Year<span class="arrow"></span></span>,
+        <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">▼</span></span></div>
 
       {{#each wants}}
         <li>
@@ -13,7 +19,10 @@
               <img src="{{thumb}}" alt="">
             </div>
             <div class="release_info">
-              {{artists}} - {{title}}, {{format}}, {{year}}
+              {{artists}} - {{title}}
+              <br><span class="label_info">({{label.name}}),</span>
+              {{format}},
+              <span class="year_info">{{year}}</span>
             </div>
           </div>
         </li>
