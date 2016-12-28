@@ -28,6 +28,7 @@
 #wantlist_ul li:hover {
   background-color: #2a2a2a;
   cursor: pointer;
+  border-top: 1px dotted #78451e;
 }
 #wantlist_ul li .wrapper {
   display: table;
