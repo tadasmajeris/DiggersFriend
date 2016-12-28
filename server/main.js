@@ -57,13 +57,16 @@ Meteor.methods({
   'importWantlist'(user){
     var accessData = getAccessData(user);
     var wantlist = new Discogs(accessData).user().wantlist();
-    wantlist.getReleases(user.username, {per_page: 10}, Meteor.bindEnvironment(function(err, data){
-      Meteor.call('insertReleases', user, data.wants);
-      // if (data.pagination.pages > 1) {
-      //
-      // }
+    wantlist.getReleases(user.username, {per_page: 100}, Meteor.bindEnvironment(function(err, data){
       // console.log(data);
-      // console.log(data.wants[3]);
+      Meteor.call('insertReleases', user, data.wants);
+      if (data.pagination && data.pagination.pages > 1) {
+        for (var i=2; i<=data.pagination.pages; i++) {
+          wantlist.getReleases(user.username, {page: i, per_page: 100}, Meteor.bindEnvironment(function(err, data){
+            Meteor.call('insertReleases', user, data.wants);
+          }))
+        }
+      }
     }))
   },
 
@@ -72,8 +75,7 @@ Meteor.methods({
       var existingRelease = Releases.findOne({userId: user._id, discogsId: release.id});
       if (existingRelease === undefined) {
         var releaseInfo = extractReleaseInfo(user, release);
-        console.log(releaseInfo);
-        // Releases.insert(releaseInfo);
+        Releases.insert(releaseInfo);
       }
     })
   },

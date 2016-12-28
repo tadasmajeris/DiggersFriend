@@ -1,4 +1,26 @@
 <template name='Wantlist'>
   <p id="wantlist_p">-wantlist-</p>
   <button id="importWantlist">Import from Discogs</button>
+
+  <ul id="wantlist_ul">
+    {{#if wants}}
+      <li id="wantlist_header">Artist - Title (Label, Cat#), Format, Year, Added</li>
+
+      {{#each wants}}
+        <li>
+          <div class="wrapper">
+            <div class="release_info">
+              <img src="{{thumb}}" alt="">
+            </div>
+            <div class="release_info">
+              {{artists}} - {{title}}, {{format}}, {{year}}
+            </div>
+          </div>
+        </li>
+      {{/each}}
+
+    {{else}}
+      No releases yet...
+    {{/if}}
+  </ul>
 </template>

@@ -3,3 +3,10 @@ Template.Wantlist.events({
     Meteor.call('importWantlist', Meteor.user());
   }
 });
+
+Template.Wantlist.helpers({
+  wants(){
+    var userId = Meteor.userId();
+    return Releases.find({userId: userId}, {sort: {dateAdded: -1}});
+  }
+})
