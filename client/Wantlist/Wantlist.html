@@ -5,12 +5,12 @@
   <ul id="wantlist_ul">
     {{#if anyWants}}
       <div id="wantlist_header">
-        <span class="header_item {{selectedSort "Artist"}}">Artist<span class="arrow"></span></span> -
-        <span class="header_item {{selectedSort "Title"}}">Title<span class="arrow"></span></span>
-       (<span class="header_item {{selectedSort "Label"}}">Label<span class="arrow"></span></span>),
-        <span class="header_item {{selectedSort "Format"}}">Format<span class="arrow"></span></span>,
-        <span class="header_item {{selectedSort "Year"}}">Year<span class="arrow"></span></span>,
-        <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">▼</span></span></div>
+        <span class="header_item {{selectedSort "Artist"}}">Artist<span class="arrow">{{selectedArrow "Artist"}}</span></span> -
+        <span class="header_item {{selectedSort "Title"}}">Title<span class="arrow">{{selectedArrow "Title"}}</span></span>
+       (<span class="header_item {{selectedSort "Label"}}">Label<span class="arrow">{{selectedArrow "Label"}}</span></span>),
+        <span class="header_item {{selectedSort "Format"}}">Format<span class="arrow">{{selectedArrow "Format"}}</span></span>,
+        <span class="header_item {{selectedSort "Year"}}">Year<span class="arrow">{{selectedArrow "Year"}}</span></span>,
+        <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">{{selectedArrow "Added"}}</span></span></div>
 
       {{#each wants}}
         <li>

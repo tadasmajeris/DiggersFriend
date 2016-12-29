@@ -92,6 +92,10 @@ Meteor.methods({
       console.log(err);
       console.log(data);
     });
+  },
+
+  updateWantlistSorting(userId, sortText){
+    Meteor.users.update(userId, {$set: {'profile.wantlistSorting': sortText}})
   }
 });
 
