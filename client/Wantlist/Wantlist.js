@@ -29,6 +29,9 @@ Template.Wantlist.helpers({
     var userSort = Meteor.user().profile.wantlistSorting.slice(0, -1);
     var arrow = Meteor.user().profile.wantlistSorting.slice(-1);
     return (userSort === type) ? arrow : ''
+  },
+  wantsCount(){
+    return Releases.find({userId: Meteor.userId()}).count();
   }
 })
 

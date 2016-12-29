@@ -1,6 +1,11 @@
 <template name='Wantlist'>
-  <p id="wantlist_p">-wantlist-</p>
+  <p id="wantlist_p">
+    -wantlist-<br>
+    ({{wantsCount}})
+  </p>
+
   <button id="importWantlist">Import from Discogs</button>
+  <p></p>
 
   <ul id="wantlist_ul">
     {{#if anyWants}}
