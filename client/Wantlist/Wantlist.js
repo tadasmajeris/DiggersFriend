@@ -21,7 +21,7 @@ Template.SearchResult.events({
     var sortText = event.target.firstChild.data + arrow;
     Meteor.users.update(Meteor.userId(), {$set: {'profile.wantlistSorting': sortText}}, function(){
       var text = $('#search-box').val().trim();
-      ReleaseSearch.search(text, { sort: getWantlistSorting() });
+      ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
     })
   }
 });
@@ -62,13 +62,13 @@ Template.SearchResult.helpers({
 
 Template.SearchResult.rendered = function(){
   var text = $('#search-box').val().trim();
-  ReleaseSearch.search(text, { sort: getWantlistSorting() });
+  ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
 }
 
 Template.SearchBox.events({
   "keyup #search-box": _.throttle(function(e) {
     var text = $(e.target).val().trim();
-    ReleaseSearch.search(text, { sort: getWantlistSorting() });
+    ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
   }, 200)
 });
 

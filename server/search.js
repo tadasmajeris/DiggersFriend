@@ -8,10 +8,11 @@ SearchSource.defineSource('releases', function(searchText, options) {
       {title: regExp},
       {labelName: regExp}
     ]};
+    selector = {$and: [{userId: options.userId}, selector]}
 
     return Releases.find(selector, options).fetch();
   } else {
-    return Releases.find({}, options).fetch();
+    return Releases.find({userId: options.userId}, options).fetch();
   }
 });
 
