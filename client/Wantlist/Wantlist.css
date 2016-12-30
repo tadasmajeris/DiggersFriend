@@ -3,6 +3,10 @@
   margin-top: -3px;
   color: #a9651e;
 }
+#wantlist_p span {
+  color: inherit;
+  font-variant-position: super;
+}
 #importWantlist {
   padding: 5px;
   display:flex;
@@ -63,4 +67,18 @@
   width: 50px;
   display: inline;
   margin-right: 10px;
+}
+
+#search-box {
+  font-size: 1.1em;
+  border: 1px dotted #9f857f;
+  margin-top: 5px;
+  padding: 7px 12px 7px 12px;
+}
+#search-box:hover {
+  border: 1px dotted #efb58f;
+}
+
+.highlighter {
+  color: orange;
 }

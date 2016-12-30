@@ -56,7 +56,6 @@ Meteor.methods({
   },
 
   'importWantlist'(user){
-    updateWantlistSorting(user);
     var accessData = getAccessData(user);
     var wantlist = new Discogs(accessData).user().wantlist();
     wantlist.getReleases(user.username, {per_page: 100}, Meteor.bindEnvironment(function(err, data){
@@ -92,10 +91,6 @@ Meteor.methods({
       console.log(err);
       console.log(data);
     });
-  },
-
-  updateWantlistSorting(userId, sortText){
-    Meteor.users.update(userId, {$set: {'profile.wantlistSorting': sortText}})
   }
 });
 
@@ -111,13 +106,14 @@ function getAccessData(user){
 }
 
 function extractReleaseInfo(user, release) {
-  var info = _.pick(release.basic_information, 'year', 'title', 'thumb');
-  info.label = _.pick(release.basic_information.labels[0], 'name', 'catno');
-  info.format = extractFormat(release.basic_information.formats[0]);
-  info.artists = extractArtists(release.basic_information.artists);
-  info.userId = user._id;
-  info.discogsId = release.id;
-  info.dateAdded = release.date_added;
+  var info        = _.pick(release.basic_information, 'year', 'title', 'thumb');
+  info.labelName  = release.basic_information.labels[0].name;
+  info.catNo      = release.basic_information.labels[0].catno;
+  info.format     = extractFormat(release.basic_information.formats[0]);
+  info.artists    = extractArtists(release.basic_information.artists);
+  info.userId     = user._id;
+  info.discogsId  = release.id;
+  info.dateAdded  = release.date_added;
   return info
 }
 
