@@ -23,10 +23,13 @@
   border: 1px solid orange;
   background-color: #47330a;
 }
-.login-close-text, #login-dropdown-list, #login-name-link {
+.login-close-text, #login-dropdown-list, #login-name-link, #wantlist_header, header h1 {
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: -moz-none;
   -o-user-select: none;
   user-select: none;
+}
+header h1 {
+  cursor: default;
 }

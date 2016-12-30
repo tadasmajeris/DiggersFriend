@@ -1,4 +1,5 @@
 <template name='Wantlist'>
+
   <p id="wantlist_p">
     -wantlist-<br>
     <span>({{wantsCount}})</span>
@@ -21,44 +22,40 @@
 
 
 <template name='SearchResult'>
+
   {{#if anyWants}}
-    <div id='search-result'>
+    <ul id="wantlist_ul">
+      <div id="wantlist_header">
+        <span class="header_item {{selectedSort "Artist"}}">Artist<span class="arrow">{{selectedArrow "Artist"}}</span></span> -
+        <span class="header_item {{selectedSort "Title"}}">Title<span class="arrow">{{selectedArrow "Title"}}</span></span>
+       (<span class="header_item {{selectedSort "Label"}}">Label<span class="arrow">{{selectedArrow "Label"}}</span></span>),
+        <span class="header_item {{selectedSort "Format"}}">Format<span class="arrow">{{selectedArrow "Format"}}</span></span>,
+        <span class="header_item {{selectedSort "Year"}}">Year<span class="arrow">{{selectedArrow "Year"}}</span></span>,
+        <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">{{selectedArrow "Added"}}</span></span>
+      </div>
 
-      <ul id="wantlist_ul">
-        <div id="wantlist_header">
-          <span class="header_item {{selectedSort "Artist"}}">Artist<span class="arrow">{{selectedArrow "Artist"}}</span></span> -
-          <span class="header_item {{selectedSort "Title"}}">Title<span class="arrow">{{selectedArrow "Title"}}</span></span>
-         (<span class="header_item {{selectedSort "Label"}}">Label<span class="arrow">{{selectedArrow "Label"}}</span></span>),
-          <span class="header_item {{selectedSort "Format"}}">Format<span class="arrow">{{selectedArrow "Format"}}</span></span>,
-          <span class="header_item {{selectedSort "Year"}}">Year<span class="arrow">{{selectedArrow "Year"}}</span></span>,
-          <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">{{selectedArrow "Added"}}</span></span>
-        </div>
+      {{#if isLoading}}
+        <p style="text-align: center">searching ...</p>
+      {{/if}}
 
-        {{#if isLoading}}
-          <p style="text-align: center">searching ...</p>
-        {{/if}}
-
-
-        {{#each wants}}
-          <li>
-            <div class="wrapper">
-              <div class="release_info">
-                <img src="{{thumb}}" alt="">
-              </div>
-              <div class="release_info">
-                {{{artists}}} - {{{title}}}
-                <br><span class="label_info">({{{labelName}}}),</span>
-                {{format}},
-                <span class="year_info">{{year}}</span>
-              </div>
+      {{#each wants}}
+        <li>
+          <div class="wrapper">
+            <div class="release_info">
+              <img src="{{thumb}}" alt="">
             </div>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
+            <div class="release_info">
+              {{{artists}}} - {{{title}}}
+              <br><span class="label_info">({{{labelName}}}),</span>
+              {{format}},
+              <span class="year_info">{{year}}</span>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
   {{else}}
     <div>no releases...</div>
   {{/if}}
-
 
 </template>

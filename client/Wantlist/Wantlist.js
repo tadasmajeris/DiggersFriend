@@ -91,7 +91,7 @@ function getWantlistSorting() {
     case 'Format':
       return {format: factor}
     case 'Label':
-      return {'label.name': factor}
+      return {labelName: factor}
     case 'Title':
       return {title: factor}
     case 'Artist':
