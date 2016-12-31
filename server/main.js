@@ -50,6 +50,7 @@ Meteor.methods({
       aData.wantlistSorting = 'Added▼';
       Accounts.createUser({ username: username, password: s.reverse(username), profile: aData });
     } else if (aData.token !== existingUser.profile.token) {
+      if (!existingUser.profile.wantlistSorting) { aData.wantlistSorting = 'Added▼' }
       Meteor.users.update( {username: username}, {$set: {profile: aData}} );
     }
     return username
@@ -59,26 +60,57 @@ Meteor.methods({
     var accessData = getAccessData(user);
     var wantlist = new Discogs(accessData).user().wantlist();
     wantlist.getReleases(user.username, {per_page: 100}, Meteor.bindEnvironment(function(err, data){
-      // console.log(data);
-      Meteor.call('insertReleases', user, data.wants);
-      if (data.pagination && data.pagination.pages > 1) {
+      var onLastPage = (data.pagination.pages === 1) ? true : false;
+      var update = Releases.findOne({userId: Meteor.userId()}) !== undefined;
+      var options = {onLastPage: onLastPage, update: update};
+
+      Meteor.call('insertReleases', user, data.wants, options);
+      if (data.pagination.pages > 1) {
         for (var i=2; i<=data.pagination.pages; i++) {
+          if (i === data.pagination.pages) { options.onLastPage = true };
           wantlist.getReleases(user.username, {page: i, per_page: 100}, Meteor.bindEnvironment(function(err, data){
-            Meteor.call('insertReleases', user, data.wants);
+            Meteor.call('insertReleases', user, data.wants, options);
           }))
         }
       }
     }))
   },
 
-  'insertReleases'(user, releases){
-    releases.forEach(function(release){
+  'insertReleases'(user, releases, options){
+    releases.forEach(function(release, i, array){
+      var releaseInfo = extractReleaseInfo(user, release);
+
       var existingRelease = Releases.findOne({userId: user._id, discogsId: release.id});
       if (existingRelease === undefined) {
-        var releaseInfo = extractReleaseInfo(user, release);
         Releases.insert(releaseInfo);
       }
+
+      if (options.update) {
+        releaseInfo = _.pick(releaseInfo, 'userId', 'discogsId');
+        var lastItem = (i === array.length - 1);
+        if (lastItem && options.onLastPage) {
+          UpdatedReleases.insert(releaseInfo, function(){
+            Meteor.call('deleteRemovedReleases');
+          });
+        } else {
+          UpdatedReleases.insert(releaseInfo);
+        }
+      }
     })
+  },
+
+  'deleteRemovedReleases'(){
+    var releases = Releases.find({userId: Meteor.userId()}).fetch();
+    var releasesIds = getReleaseIds(releases);
+    var updatedReleases = UpdatedReleases.find({userId: Meteor.userId()}).fetch();
+    var updatedReleasesIds = getReleaseIds(updatedReleases);
+
+    var deletedReleasesIds = _.difference(releasesIds, updatedReleasesIds);
+
+    deletedReleasesIds.forEach(function(discogsId){
+      Releases.remove({userId: Meteor.userId(), discogsId: discogsId});
+    });
+    UpdatedReleases.remove({userId: Meteor.userId()});
   },
 
   'discogs.getRelease'(id){
@@ -136,4 +168,12 @@ function extractFormat(format) {
     str += format.descriptions[0]
   }
   return str
+}
+
+function getReleaseIds(releases){
+  var ids = [];
+  releases.forEach(function(release){
+    ids.push(release.discogsId);
+  });
+  return ids
 }

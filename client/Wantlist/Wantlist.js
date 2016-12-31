@@ -9,6 +9,17 @@ ReleaseSearch = new SearchSource('releases', fields, options);
 Template.Wantlist.events({
   'click #importWantlist'(){
     Meteor.call('importWantlist', Meteor.user());
+    // var query = UpdatedReleases.find({});
+    // var handle = query.observeChanges({
+    //   removed: function(){
+    //     console.log('releases removed');
+    //     document.location.reload(true);
+    //   },
+    //   added: function(){
+    //     console.log('releases added');
+    //     document.location.reload(true);
+    //   }
+    // });
   }
 });
 
@@ -20,8 +31,7 @@ Template.SearchResult.events({
     arrow = (clickedSort === userSort && arrow === '▼') ? '▲' : '▼';
     var sortText = event.target.firstChild.data + arrow;
     Meteor.users.update(Meteor.userId(), {$set: {'profile.wantlistSorting': sortText}}, function(){
-      var text = $('#search-box').val().trim();
-      ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
+      runReleaseSearch();
     })
   }
 });
@@ -61,14 +71,12 @@ Template.SearchResult.helpers({
 });
 
 Template.SearchResult.rendered = function(){
-  var text = $('#search-box').val().trim();
-  ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
+  runReleaseSearch();
 }
 
 Template.SearchBox.events({
   "keyup #search-box": _.throttle(function(e) {
-    var text = $(e.target).val().trim();
-    ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
+    runReleaseSearch();
   }, 200)
 });
 
@@ -97,4 +105,10 @@ function getWantlistSorting() {
     case 'Artist':
       return {artists: factor}
   }
+}
+
+function runReleaseSearch(){
+  console.log('runReleaseSearch');
+  var text = $('#search-box').val().trim();
+  ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
 }
