@@ -1,11 +1,11 @@
 #login-dropdown-list {
-  margin-left: -60px;
+  margin-left: -52px;
   margin-top: -1px;
   background-color: #222;
   width: 150px;
 }
 #login-dropdown-list .login-close-text {
-  margin-left: 60px;
+  margin-left: 53px;
   margin-top: -6px;
   color: #aeaeae;
 }
@@ -29,7 +29,4 @@
   -moz-user-select: -moz-none;
   -o-user-select: none;
   user-select: none;
-}
-header h1 {
-  cursor: default;
 }

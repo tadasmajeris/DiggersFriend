@@ -27,7 +27,7 @@
 #wantlist_ul li {
   border-top: 1px dotted #53352e;
   margin: 0;
-  padding: 0;
+  padding: 4px 0 4px 0;
 }
 #wantlist_ul li:hover {
   background-color: #2a2a2a;
