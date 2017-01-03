@@ -110,7 +110,10 @@ Meteor.methods({
     deletedReleasesIds.forEach(function(discogsId){
       Releases.remove({userId: Meteor.userId(), discogsId: discogsId});
     });
-    UpdatedReleases.remove({userId: Meteor.userId()});
+    UpdatedReleases.remove({userId: Meteor.userId()}, function(){
+      // insert alert which will be listened to on the client
+      Alerts.insert({userId: Meteor.userId()});
+    });
   },
 
   'discogs.getRelease'(id){

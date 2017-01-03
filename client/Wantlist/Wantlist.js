@@ -9,17 +9,13 @@ ReleaseSearch = new SearchSource('releases', fields, options);
 Template.Wantlist.events({
   'click #importWantlist'(){
     Meteor.call('importWantlist', Meteor.user());
-    // var query = UpdatedReleases.find({});
-    // var handle = query.observeChanges({
-    //   removed: function(){
-    //     console.log('releases removed');
-    //     document.location.reload(true);
-    //   },
-    //   added: function(){
-    //     console.log('releases added');
-    //     document.location.reload(true);
-    //   }
-    // });
+    var query = Alerts.find({userId: Meteor.userId()});
+    var handle = query.observeChanges({
+      added: function(){
+        Meteor.call('clearAlerts', {userId: Meteor.userId()})
+        document.location.reload(true);
+      }
+    });
   }
 });
 
