@@ -32,11 +32,16 @@ Template.SearchResult.events({
   },
   'mouseenter .wantlist_li'(event){
     var heartButton = event.target.getElementsByClassName("heart_button")[0];
-    if (heartButton) { heartButton.firstElementChild.style = "opacity: 1;" }
+    if (heartButton) { heartButton.firstElementChild.className = getIconName(getHeartedValue(this._id), true) }
   },
   'mouseleave .wantlist_li'(event){
     var heartButton = event.target.getElementsByClassName("heart_button")[0];
-    if (heartButton) { heartButton.firstElementChild.style = "opacity: 0;" }
+    if (heartButton) { heartButton.firstElementChild.className = getIconName(getHeartedValue(this._id), false) }
+  },
+  'click .heart_button'(event){
+    var newHeartedStatus = getHeartedValue(this._id) !== true ? true : false;
+    event.target.firstElementChild.className = getIconName(newHeartedStatus, true);
+    Releases.update(this._id, {$set: {hearted: newHeartedStatus}})
   }
 });
 
@@ -69,8 +74,11 @@ Template.SearchResult.helpers({
     var arrow = Meteor.user().profile.wantlistSorting.slice(-1);
     return (userSort === type) ? arrow : ''
   },
-  isLoading: function(){
+  isLoading(){
     return ReleaseSearch.getStatus().loading;
+  },
+  heartIcon(){
+    return getIconName(this.hearted);
   }
 });
 
@@ -112,7 +120,17 @@ function getWantlistSorting() {
 }
 
 function runReleaseSearch(text){
-  // console.log('runReleaseSearch: ', text);
   var text = (text === undefined) ? $('#search-box').val().trim() : text;
   ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
+}
+
+function getHeartedValue(releaseId){
+  var release = Releases.findOne(releaseId);
+  return (release.hearted === undefined) ? false : release.hearted;
+}
+
+function getIconName(hearted, mouseOver){
+  var iconName = hearted ? "fa fa-heart" : "fa fa-heart-o";
+  var visibility = (hearted || mouseOver) ? " visible" : " invisible";
+  return iconName + visibility
 }
