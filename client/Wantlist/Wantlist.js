@@ -38,6 +38,12 @@ Template.SearchResult.events({
     var heartButton = event.target.getElementsByClassName("heart_button")[0];
     if (heartButton) { heartButton.firstElementChild.className = getIconName(getHeartedValue(this._id), false) }
   },
+  'click .wantlist_li'(event){
+    if (event.target.className === 'release_info') {
+      var popup = window.open("about:blank", "_blank");
+      popup.location = `https://www.discogs.com/sell/release/${this.discogsId}?sort=price%2Casc&ev=rb`;
+    }
+  },
   'click .heart_button'(event){
     var newHeartedStatus = getHeartedValue(this._id) !== true ? true : false;
     event.target.firstElementChild.className = getIconName(newHeartedStatus, true);

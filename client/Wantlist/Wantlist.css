@@ -100,9 +100,6 @@
   border: none;
   background-color: transparent;
 }
-.heart_button i {
-  /*opacity: 0;*/
-}
 .visible {
   opacity: 1;
 }
