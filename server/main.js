@@ -65,10 +65,13 @@ Meteor.methods({
       var options = {onLastPage: onLastPage, update: update};
 
       Meteor.call('insertReleases', user, data.wants, options);
+
       if (data.pagination.pages > 1) {
+        var asyncIndex = 1;
         for (var i=2; i<=data.pagination.pages; i++) {
-          if (i === data.pagination.pages) { options.onLastPage = true };
           wantlist.getReleases(user.username, {page: i, per_page: 100}, Meteor.bindEnvironment(function(err, data){
+            asyncIndex += 1;
+            if (asyncIndex === data.pagination.pages) { options.onLastPage = true };
             Meteor.call('insertReleases', user, data.wants, options);
           }))
         }
@@ -77,6 +80,7 @@ Meteor.methods({
   },
 
   'insertReleases'(user, releases, options){
+    console.log('insertReleases ', options);
     releases.forEach(function(release, i, array){
       var releaseInfo = extractReleaseInfo(user, release);
 
