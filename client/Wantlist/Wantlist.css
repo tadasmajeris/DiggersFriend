@@ -57,6 +57,10 @@
 .release_info {
   display: table-cell;
   vertical-align: middle;
+  width: 100%;
+}
+.image_info {
+  width: 60px;
 }
 .label_info {
   color: #777;
