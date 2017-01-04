@@ -88,5 +88,14 @@
   float: right;
   position: relative;
   top: -10px;
-  visibility: collapse;
+  border: none;
+  color: #555;
+}
+.heart_button:hover {
+  color: #efb58f;
+  border: none;
+  background-color: transparent;
+}
+.heart_button i {
+  opacity: 0;
 }

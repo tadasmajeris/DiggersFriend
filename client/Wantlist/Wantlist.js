@@ -31,12 +31,12 @@ Template.SearchResult.events({
     })
   },
   'mouseenter .wantlist_li'(event){
-    var heartButton = event.target.lastElementChild.lastElementChild;
-    if (heartButton) { heartButton.style = "visibility: visible;" }
+    var heartButton = event.target.lastElementChild.lastElementChild.firstElementChild;
+    if (heartButton) { heartButton.style = "opacity: 1;" }
   },
   'mouseleave .wantlist_li'(event){
-    var heartButton = event.target.lastElementChild.lastElementChild;
-    if (heartButton) { heartButton.style = "visibility: hidden;" }
+    var heartButton = event.target.lastElementChild.lastElementChild.firstElementChild;
+    if (heartButton) { heartButton.style = "opacity: 0;" }
   }
 });
 
