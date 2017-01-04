@@ -29,6 +29,14 @@ Template.SearchResult.events({
     Meteor.users.update(Meteor.userId(), {$set: {'profile.wantlistSorting': sortText}}, function(){
       runReleaseSearch();
     })
+  },
+  'mouseenter .wantlist_li'(event){
+    var heartButton = event.target.lastElementChild.lastElementChild;
+    if (heartButton) { heartButton.style = "visibility: visible;" }
+  },
+  'mouseleave .wantlist_li'(event){
+    var heartButton = event.target.lastElementChild.lastElementChild;
+    if (heartButton) { heartButton.style = "visibility: hidden;" }
   }
 });
 

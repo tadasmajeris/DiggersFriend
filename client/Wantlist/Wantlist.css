@@ -36,6 +36,7 @@
 }
 #wantlist_ul li .wrapper {
   display: table;
+  width: 100%;
 }
 #wantlist_ul #wantlist_header {
   font-weight: 900;
@@ -81,4 +82,11 @@
 
 .highlighter {
   color: orange;
+}
+
+.heart_button {
+  float: right;
+  position: relative;
+  top: -10px;
+  visibility: collapse;
 }
