@@ -79,6 +79,10 @@ Template.SearchResult.helpers({
   },
   heartIcon(){
     return getIconName(this.hearted);
+  },
+  displayThumb(){
+    var defaultImage = "https://s.discogs.com/images/default-release.png";
+    return this.thumb ? this.thumb : defaultImage;
   }
 });
 
