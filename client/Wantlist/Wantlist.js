@@ -1,5 +1,5 @@
 var options = {
-  keepHistory: 1000 * 60 * 5,
+  keepHistory: 1000,
   localSearch: true
 }
 var fields = ['artists', 'title', 'labelName'];
@@ -13,7 +13,7 @@ Template.Wantlist.events({
     var handle = query.observeChanges({
       added: function(){
         Meteor.call('clearAlerts', {userId: Meteor.userId()})
-        document.location.reload(true);
+        runReleaseSearch();
       }
     });
   }
@@ -103,8 +103,8 @@ function getWantlistSorting() {
   }
 }
 
-function runReleaseSearch(){
-  console.log('runReleaseSearch');
-  var text = $('#search-box').val().trim();
+function runReleaseSearch(text){
+  // console.log('runReleaseSearch: ', text);
+  var text = (text === undefined) ? $('#search-box').val().trim() : text;
   ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
 }
