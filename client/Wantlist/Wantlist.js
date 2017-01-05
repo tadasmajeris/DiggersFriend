@@ -48,6 +48,10 @@ Template.SearchResult.events({
     var newHeartedStatus = getHeartedValue(this._id) !== true ? true : false;
     event.target.firstElementChild.className = getIconName(newHeartedStatus, true);
     Releases.update(this._id, {$set: {hearted: newHeartedStatus}})
+  },
+  'click #header_heart'(event){
+    var selectHearted = Meteor.user().profile.hearted !== true ? true : false;
+    Meteor.users.update(Meteor.userId(), {$set: {"profile.hearted": selectHearted}});
   }
 });
 
@@ -89,6 +93,11 @@ Template.SearchResult.helpers({
   displayThumb(){
     var defaultImage = "https://s.discogs.com/images/default-release.png";
     return this.thumb ? this.thumb : defaultImage;
+  },
+  headerHeart(){
+    var hearted = Meteor.user().profile.hearted;
+    var iconName = getIconName(hearted, true);
+    return hearted ? iconName + " selected_sort" : iconName;
   }
 });
 
