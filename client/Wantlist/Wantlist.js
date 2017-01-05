@@ -47,11 +47,17 @@ Template.SearchResult.events({
   'click .heart_button'(event){
     var newHeartedStatus = getHeartedValue(this._id) !== true ? true : false;
     event.target.firstElementChild.className = getIconName(newHeartedStatus, true);
-    Releases.update(this._id, {$set: {hearted: newHeartedStatus}})
+    Releases.update(this._id, {$set: {hearted: newHeartedStatus}}, function(){
+      if (Meteor.user().profile.hearted) {
+        runReleaseSearch();
+      }
+    })
   },
   'click #header_heart'(event){
     var selectHearted = Meteor.user().profile.hearted !== true ? true : false;
-    Meteor.users.update(Meteor.userId(), {$set: {"profile.hearted": selectHearted}});
+    Meteor.users.update(Meteor.userId(), {$set: {"profile.hearted": selectHearted}}, function(){
+      runReleaseSearch();
+    });
   }
 });
 
@@ -96,8 +102,10 @@ Template.SearchResult.helpers({
   },
   headerHeart(){
     var hearted = Meteor.user().profile.hearted;
-    var iconName = getIconName(hearted, true);
-    return hearted ? iconName + " selected_sort" : iconName;
+    return getIconName(hearted, true);
+  },
+  selectedHeart(){
+    return Meteor.user().profile.hearted ? "selected_sort" : '';
   }
 });
 
@@ -140,7 +148,7 @@ function getWantlistSorting() {
 
 function runReleaseSearch(text){
   var text = (text === undefined) ? $('#search-box').val().trim() : text;
-  ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId() });
+  ReleaseSearch.search(text, { sort: getWantlistSorting(), userId: Meteor.userId(), hearted: Meteor.user().profile.hearted });
 }
 
 function getHeartedValue(releaseId){

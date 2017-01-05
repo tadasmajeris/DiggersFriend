@@ -28,6 +28,7 @@
   border-top: 1px dotted #53352e;
   margin: 0;
   padding: 4px 0 4px 0;
+  min-height: 50px;
 }
 #wantlist_ul li:hover {
   background-color: #2a2a2a;
@@ -37,6 +38,7 @@
 #wantlist_ul li .wrapper {
   display: table;
   width: 100%;
+  min-height: 50px;
 }
 #wantlist_ul #wantlist_header {
   font-weight: 900;
@@ -60,6 +62,7 @@
   display: table-cell;
   vertical-align: middle;
   width: 100%;
+  min-height: 50px;
 }
 .image_info {
   width: 60px;
@@ -113,13 +116,10 @@
   border: none;
   cursor: pointer;
   margin-right: 9px;
-  margin-top: 2px;
+  color: #888;
 }
 #header_heart:hover {
   border: none;
   color: #eee;
   background-color: transparent;
-}
-i {
-  color: #aaa;
 }

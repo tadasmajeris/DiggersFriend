@@ -32,7 +32,7 @@
         <span class="header_item {{selectedSort "Format"}}">Format<span class="arrow">{{selectedArrow "Format"}}</span></span>,
         <span class="header_item {{selectedSort "Year"}}">Year<span class="arrow">{{selectedArrow "Year"}}</span></span>,
         <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">{{selectedArrow "Added"}}</span></span>
-        <i id="header_heart" class="{{headerHeart}}" aria-hidden="true"></i>
+        <span id="header_heart"><i class="{{headerHeart}} {{selectedHeart}}" aria-hidden="true"></i></span>
       </div>
 
       {{#if isLoading}}

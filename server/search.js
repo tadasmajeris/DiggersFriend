@@ -1,6 +1,12 @@
 SearchSource.defineSource('releases', function(searchText, options) {
   var options = (options === null) ? {} : options;
 
+  if (options.hearted === true) {
+    var hearted = {hearted: true};
+  } else {
+    var hearted = {};
+  }
+
   if(searchText) {
     var regExp = buildRegExp(searchText);
     var selector = {$or: [
@@ -8,11 +14,11 @@ SearchSource.defineSource('releases', function(searchText, options) {
       {title: regExp},
       {labelName: regExp}
     ]};
-    selector = {$and: [{userId: options.userId}, selector]}
 
+    selector = {$and: [{userId: options.userId}, hearted, selector]}
     return Releases.find(selector, options).fetch();
   } else {
-    return Releases.find({userId: options.userId}, options).fetch();
+    return Releases.find({$and: [{userId: options.userId}, hearted]}, options).fetch();
   }
 });
 
