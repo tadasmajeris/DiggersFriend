@@ -80,7 +80,7 @@ Meteor.methods({
   },
 
   'insertReleases'(user, releases, options){
-    console.log('insertReleases ', options);
+    // console.log('insertReleases ', options);
     releases.forEach(function(release, i, array){
       var releaseInfo = extractReleaseInfo(user, release);
 
