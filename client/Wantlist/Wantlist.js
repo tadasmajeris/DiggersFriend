@@ -45,16 +45,26 @@ Template.SearchResult.events({
         if (heartButton) { heartButton.firstElementChild.className = getIconName(getHeartedValue(this._id), false) }
     },
     'click .wantlist_li'(event){
-        if (event.target.className === 'release_info') {
+        if (event.target.className !== 'heart_button') {
             var popup = window.open("about:blank", "_blank");
             popup.location = `https://www.discogs.com/sell/release/${this.discogsId}?sort=price%2Casc&ev=rb`;
         }
     },
     'click .heart_button'(event){
-        var newHeartedStatus = getHeartedValue(this._id) !== true ? true : false;
+        var id = this._id;
+        var newHeartedStatus = getHeartedValue(id) !== true ? true : false;
         event.target.firstElementChild.className = getIconName(newHeartedStatus, true);
-        Releases.update(this._id, {$set: {hearted: newHeartedStatus}}, function(){
-            if (Meteor.user().profile.hearted) {
+        Releases.update(id, {$set: {hearted: newHeartedStatus}}, function(){
+            if (newHeartedStatus === true) {
+                Meteor.call('discogs.getReleaseData', id);
+                var query = Alerts.find({userId: Meteor.userId(), status: 'releaseUpdated'});
+                var handle = query.observeChanges({
+                    added: function(){
+                        Meteor.call('clearAlerts', {userId: Meteor.userId()});
+                        runReleaseSearch();
+                    }
+                });
+            } else {
                 runReleaseSearch();
             }
         })
@@ -112,11 +122,21 @@ Template.SearchResult.helpers({
     },
     selectedHeart(){
         return Meteor.user().profile.hearted ? "selected_sort" : '';
+    },
+    displayPricesIfHearted(){
+        return this.hearted ? 'sales_info' : 'invisible';
+    },
+    calcPrice(){
+        var today = new Date().withoutTime();
+        var rate = ExchangeRates.findOne({date: today});
+        var price = Math.round(this.lowestPriceUSD * rate.GBP);
+        return price
     }
 });
 
 Template.Wantlist.rendered = function(){
     Session.set('importing', false);
+    getTodaysExchangeRates();
 }
 
 Template.SearchResult.rendered = function(){
@@ -177,4 +197,18 @@ const updateHtmlToLoading = function(isLoading, importButton) {
     importButton.innerText = isLoading ? 'importing...' : 'Import from Discogs';
     importButton.className = isLoading ? 'disabled-btn' : '';
     $('#loading-gif').fadeTo(400, isLoading ? 1 : 0);
+}
+
+const getTodaysExchangeRates = function(){
+    var today = new Date().withoutTime();
+    // if exchange rate hasnt been set today
+    if (!ExchangeRates.findOne({date: today})) {
+        Meteor.call('getExchangeRates');
+    }
+}
+
+Date.prototype.withoutTime = function() {
+    var d = new Date(this);
+    d.setHours(0, 0, 0, 0, 0);
+    return d
 }

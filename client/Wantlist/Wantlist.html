@@ -43,20 +43,27 @@
       {{#each wants}}
         <li class="wantlist_li">
           <div class="wrapper">
+
             <div class="image_info">
               <img src="{{displayThumb}}" alt="">
             </div>
+
             <div class="release_info">
               {{{artists}}} - {{{title}}}
               <br><span class="label_info">({{{labelName}}}),</span>
               {{format}},
               <span class="year_info">{{year}}</span>
             </div>
+
             <button class="heart_button">
               <i class="{{heartIcon}}" aria-hidden="true"></i>
             </button>
+
           </div>
 
+          <div class="{{displayPricesIfHearted}}">
+              {{forSale}} £{{calcPrice}}
+          </div>
         </li>
       {{/each}}
     </ul>

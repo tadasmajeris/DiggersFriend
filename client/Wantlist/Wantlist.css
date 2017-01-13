@@ -9,7 +9,7 @@
 }
 #importWantlist {
     padding: 5px;
-    display:inline-block;;
+    display:inline-block;
     margin-top: 10px;
     margin-left: 25px;
 }
@@ -81,6 +81,17 @@
 }
 .year_info {
     color: #9f857f;
+}
+.sales_info {
+    color: #f31;
+    float: right;
+    position: relative;
+    left: 52px;
+    top: -38px;
+    cursor: default;
+}
+.invisible {
+    display: none;
 }
 #wantlist_ul img {
     width: 50px;
