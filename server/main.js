@@ -128,12 +128,14 @@ Meteor.methods({
         });
         var db = dis.database();
         db.getRelease(release.discogsId, Meteor.bindEnvironment(function(err, data){
-            var forSale = data.num_for_sale;
-            var price = Math.round(data.lowest_price * 100) / 100;
-            var date = new Date();
-            Releases.update(id, {$set: {lowestPriceUSD: price, forSale: forSale, updatedAt: date}}, function(){
-                Alerts.insert({userId: Meteor.userId(), status: 'releaseUpdated'});
-            });
+            if (data) {
+                var forSale = data.num_for_sale;
+                var price = Math.round(data.lowest_price * 100) / 100;
+                var date = new Date();
+                Releases.update(id, {$set: {lowestPriceUSD: price, forSale: forSale, updatedAt: date}}, function(){
+                    Alerts.insert({userId: Meteor.userId(), status: 'releaseUpdated'});
+                });
+            }
         }));
     },
 

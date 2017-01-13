@@ -6,6 +6,7 @@
   </p>
 
   {{#if currentUser}}
+    {{updateUsersFavorites}}
     <button id="importWantlist">Import from Discogs</button>
     <img src='/ajax-loader.gif' id='loading-gif' style='opacity: 0'>
     {{> SearchBox }}

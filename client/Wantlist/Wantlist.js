@@ -76,6 +76,11 @@ Template.SearchResult.events({
 Template.Wantlist.helpers({
     wantsCount(){
         return Releases.find({userId: Meteor.userId()}).count();
+    },
+    updateUsersFavorites(){
+        if (Meteor.user().profile.hearted) {
+            updateUsersFavoritesData()
+        }
     }
 });
 
