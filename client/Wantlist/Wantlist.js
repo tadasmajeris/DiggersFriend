@@ -6,6 +6,13 @@ var fields = ['artists', 'title', 'labelName'];
 
 ReleaseSearch = new SearchSource('releases', fields, options);
 
+Template.Wantlist.onCreated(function() {
+    Meteor.subscribe('releases');
+    Meteor.subscribe('updatedReleases');
+    Meteor.subscribe('exchangeRates');
+    Meteor.subscribe('userAlerts');
+});
+
 Template.Wantlist.events({
     'click #importWantlist'(event){
         if (Session.get('importing') !== true) {

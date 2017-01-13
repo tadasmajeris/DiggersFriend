@@ -121,6 +121,7 @@ Meteor.methods({
     },
 
     'discogs.getReleaseData'(id){
+        // console.log('discogs.get: ', id);
         var release = Releases.findOne(id);
         var dis = new Discogs({
             consumerKey: Meteor.settings.discogsKey,
@@ -128,6 +129,8 @@ Meteor.methods({
         });
         var db = dis.database();
         db.getRelease(release.discogsId, Meteor.bindEnvironment(function(err, data){
+            // console.log(err);
+            // console.log(data);
             if (data) {
                 var forSale = data.num_for_sale;
                 var price = Math.round(data.lowest_price * 100) / 100;
