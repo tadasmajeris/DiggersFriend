@@ -9,14 +9,19 @@ Meteor.startup(() => {
 
 Meteor.methods({
     'discogs.authorize'(host){
+        // console.log('authorize: ', host);
         var oAuth = new Discogs().oauth();
         oAuth.getRequestToken(
             Meteor.settings.discogsKey,
             Meteor.settings.discogsSecret,
             `${host}callback`,
             Meteor.bindEnvironment(function(err, requestData){
+                // console.log(err);
+                // console.log(requestData);
                 REQUEST_DATA = requestData;
-                Meteor.call('insertAlert', {url: requestData.authorizeUrl});
+                if (requestData) {
+                    Meteor.call('insertAlert', {url: requestData.authorizeUrl});
+                }
             })
         );
     },
@@ -31,16 +36,16 @@ Meteor.methods({
 
     'getAccessToken'(params){
         var oAuth = new Discogs(REQUEST_DATA).oauth();
-        console.log('request data: ', REQUEST_DATA);
+        // console.log('request data: ', REQUEST_DATA);
         oAuth.getAccessToken(
             params.oauth_verifier, // Verification code sent back by Discogs
             Meteor.bindEnvironment(function(err, accessData){
-                console.log('ERROR: ', err);
-                console.log('access data: ', REQUEST_DATA);
+                // console.log('ERROR: ', err);
+                // console.log('access data: ', REQUEST_DATA);
                 var dis = new Discogs(accessData);
                 dis.getIdentity(Meteor.bindEnvironment(function(err, data){
-                    console.log('getIdentity ERROR: ', err);
-                    console.log(data);
+                    // console.log('getIdentity ERROR: ', err);
+                    // console.log(data);
                     Meteor.call('insertAlert', {username: data.username, accessData: accessData});
                 }));
             })
@@ -67,8 +72,7 @@ Meteor.methods({
         wantlist.getReleases(user.username, {per_page: 100}, Meteor.bindEnvironment(function(err, data){
             var onLastPage = (data.pagination.pages === 1) ? true : false;
             var update = Releases.findOne({userId: Meteor.userId()}) !== undefined;
-            var firstImport = Release.findOne({userId: user._id}) === undefined;
-            var options = {onLastPage: onLastPage, update: update, firstTime: firstImport};
+            var options = {onLastPage: onLastPage, update: update};
 
             Meteor.call('insertReleases', user, data.wants, options);
 
@@ -105,9 +109,7 @@ Meteor.methods({
                 } else {
                     UpdatedReleases.insert(releaseInfo);
                 }
-            }
-
-            if (options.firstTime && options.onLastPage && lastItem) {
+            } else if (options.onLastPage && lastItem) {
                 Alerts.insert({userId: user._id});
             }
         })

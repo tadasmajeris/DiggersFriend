@@ -132,11 +132,14 @@
 }
 
 .heart_button {
+    padding: 0;
+    margin-right: 6px;
     float: right;
     position: relative;
     top: -10px;
     border: none;
     color: #555;
+    z-index: 5;
 }
 .heart_button:hover {
     color: #efb58f;
@@ -150,10 +153,11 @@
     opacity: 0;
 }
 #header_heart {
+    padding: 0;
     float: right;
     border: none;
     cursor: pointer;
-    margin-right: 9px;
+    margin-right: 8px;
     color: #888;
 }
 #header_heart:hover {

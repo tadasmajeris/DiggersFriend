@@ -6,7 +6,10 @@ Template.HomeLayout.events({
     'click #discogs_login'(){
         // var newWindow = window.open('', '_blank', "width=800, height=500");
         // newWindow.document.write('connecting to Discogs...');
+
         Meteor.call('discogs.authorize', window.location.href);
+        $('#logging-gif').fadeTo(400, 1);
+
         var query = Alerts.find({url: {$exists: true}});
         Alerts.observer = query.observeChanges({
             added: function(){

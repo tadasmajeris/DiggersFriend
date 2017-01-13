@@ -52,15 +52,16 @@ Template.SearchResult.events({
         if (heartButton) { heartButton.firstElementChild.className = getIconName(getHeartedValue(this._id), false) }
     },
     'click .wantlist_li'(event){
-        if (event.target.className !== 'heart_button') {
+        if (event.target.className !== 'heart_button' && event.target.nodeName !== 'I') {
             var popup = window.open("about:blank", "_blank");
             popup.location = `https://www.discogs.com/sell/release/${this.discogsId}?sort=price%2Casc&ev=rb`;
         }
     },
     'click .heart_button'(event){
         var id = this._id;
+        var icon = event.target.nodeName === 'I' ? event.target : event.target.firstElementChild;
         var newHeartedStatus = getHeartedValue(id) !== true ? true : false;
-        event.target.firstElementChild.className = getIconName(newHeartedStatus, true);
+        icon.className = getIconName(newHeartedStatus, true);
         Releases.update(id, {$set: {hearted: newHeartedStatus}}, function(){
             if (newHeartedStatus === true) {
                 getReleaseData(id);
