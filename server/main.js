@@ -31,11 +31,16 @@ Meteor.methods({
 
     'getAccessToken'(params){
         var oAuth = new Discogs(REQUEST_DATA).oauth();
+        console.log('request data: ', REQUEST_DATA);
         oAuth.getAccessToken(
             params.oauth_verifier, // Verification code sent back by Discogs
             Meteor.bindEnvironment(function(err, accessData){
+                console.log('ERROR: ', err);
+                console.log('access data: ', REQUEST_DATA);
                 var dis = new Discogs(accessData);
                 dis.getIdentity(Meteor.bindEnvironment(function(err, data){
+                    console.log('getIdentity ERROR: ', err);
+                    console.log(data);
                     Meteor.call('insertAlert', {username: data.username, accessData: accessData});
                 }));
             })
