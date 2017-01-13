@@ -67,7 +67,8 @@ Meteor.methods({
         wantlist.getReleases(user.username, {per_page: 100}, Meteor.bindEnvironment(function(err, data){
             var onLastPage = (data.pagination.pages === 1) ? true : false;
             var update = Releases.findOne({userId: Meteor.userId()}) !== undefined;
-            var options = {onLastPage: onLastPage, update: update};
+            var firstImport = Release.findOne({userId: user._id}) === undefined;
+            var options = {onLastPage: onLastPage, update: update, firstTime: firstImport};
 
             Meteor.call('insertReleases', user, data.wants, options);
 
@@ -94,9 +95,9 @@ Meteor.methods({
                 Releases.insert(releaseInfo);
             }
 
+            var lastItem = (i === array.length - 1);
             if (options.update) {
                 releaseInfo = _.pick(releaseInfo, 'userId', 'discogsId');
-                var lastItem = (i === array.length - 1);
                 if (lastItem && options.onLastPage) {
                     UpdatedReleases.insert(releaseInfo, function(){
                         Meteor.call('deleteRemovedReleases');
@@ -104,6 +105,10 @@ Meteor.methods({
                 } else {
                     UpdatedReleases.insert(releaseInfo);
                 }
+            }
+
+            if (options.firstTime && options.onLastPage && lastItem) {
+                Alerts.insert({userId: user._id});
             }
         })
     },
