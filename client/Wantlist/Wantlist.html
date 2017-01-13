@@ -8,7 +8,7 @@
   {{#if currentUser}}
     {{updateUsersFavorites}}
     <button id="importWantlist">Import from Discogs</button>
-    <img src='/ajax-loader.gif' id='loading-gif' style='opacity: 0'>
+    <img src='/ajax-loader.gif' id='loading-gif' style='opacity: 0'><br>
     {{> SearchBox }}
     {{> SearchResult}}
   {{else}}
@@ -20,6 +20,7 @@
 
 <template name="SearchBox">
   <input type="text" id="search-box" placeholder="search..." />
+  <img src='/ajax-loader.gif' id='searching-gif' class="{{isLoading}}">
 </template>
 
 
@@ -36,10 +37,6 @@
         <span class="header_item {{selectedSort "Added"}}">Added<span class="arrow">{{selectedArrow "Added"}}</span></span>
         <span id="header_heart"><i class="{{headerHeart}} {{selectedHeart}}" aria-hidden="true"></i></span>
       </div>
-
-      {{#if isLoading}}
-        <p style="text-align: center">searching ...</p>
-      {{/if}}
 
       {{#each wants}}
         <li class="wantlist_li">

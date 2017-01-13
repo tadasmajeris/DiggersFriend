@@ -114,9 +114,6 @@ Template.SearchResult.helpers({
         var arrow = Meteor.user().profile.wantlistSorting.slice(-1);
         return (userSort === type) ? arrow : ''
     },
-    isLoading(){
-        return ReleaseSearch.getStatus().loading;
-    },
     heartIcon(){
         return getIconName(this.hearted);
     },
@@ -155,6 +152,12 @@ Template.SearchBox.events({
     "keyup #search-box": _.throttle(function(e) {
         runReleaseSearch();
     }, 200)
+});
+
+Template.SearchBox.helpers({
+    isLoading(){
+        return ReleaseSearch.getStatus().loading ? '' : 'transparent';
+    },
 });
 
 const buildRegExp = function(searchText) {

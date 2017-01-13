@@ -14,8 +14,17 @@
     margin-left: 25px;
 }
 #loading-gif {
+    position:§ relative;
+    top: 6px;
+}
+#searching-gif {
+    display: inline;
     position: relative;
     top: 6px;
+    opacity: 1;
+}
+#searching-gif.transparent {
+    opacity: 0;
 }
 #importWantlist.disabled-btn:hover {
     background-color: transparent;
@@ -26,7 +35,7 @@
 #wantlist_ul {
     list-style-type: none;
     padding: 0;
-    min-width: 350px;
+    min-width: 370px;
     max-width: 430px;
     margin: auto;
     margin-top: 20px;
@@ -36,6 +45,7 @@
 #wantlist_ul li {
     border-top: 1px dotted #53352e;
     margin: 0;
+    margin-left: -10px;
     padding: 4px 0 4px 0;
     min-height: 50px;
 }
@@ -105,8 +115,9 @@
 }
 
 #search-box {
-    display: block;
+    display: inline-block;
     margin: auto;
+    margin-left: 22px;
     font-size: 1.1em;
     border: 1px dotted #9f857f;
     margin-top: 5px;
