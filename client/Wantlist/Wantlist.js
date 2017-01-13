@@ -56,14 +56,7 @@ Template.SearchResult.events({
         event.target.firstElementChild.className = getIconName(newHeartedStatus, true);
         Releases.update(id, {$set: {hearted: newHeartedStatus}}, function(){
             if (newHeartedStatus === true) {
-                Meteor.call('discogs.getReleaseData', id);
-                var query = Alerts.find({userId: Meteor.userId(), status: 'releaseUpdated'});
-                var handle = query.observeChanges({
-                    added: function(){
-                        Meteor.call('clearAlerts', {userId: Meteor.userId()});
-                        runReleaseSearch();
-                    }
-                });
+                getReleaseData(id);
             } else {
                 runReleaseSearch();
             }
@@ -74,6 +67,9 @@ Template.SearchResult.events({
         Meteor.users.update(Meteor.userId(), {$set: {"profile.hearted": selectHearted}}, function(){
             runReleaseSearch();
         });
+        if (selectHearted === true) {
+            updateUsersFavoritesData();
+        }
     }
 });
 
@@ -149,13 +145,13 @@ Template.SearchBox.events({
     }, 200)
 });
 
-function buildRegExp(searchText) {
+const buildRegExp = function(searchText) {
     // this is a dumb implementation
     var parts = searchText.trim().split(/[ \-\:]+/);
     return new RegExp("(" + parts.join('|') + ")", "ig");
 }
 
-function getWantlistSorting() {
+const getWantlistSorting = function() {
     var userSort = Meteor.user().profile.wantlistSorting.slice(0, -1);
     var arrow = Meteor.user().profile.wantlistSorting.slice(-1);
     var factor = (arrow === '▲') ? 1 : -1;
@@ -207,8 +203,26 @@ const getTodaysExchangeRates = function(){
     }
 }
 
-Date.prototype.withoutTime = function() {
+Date.prototype.withoutTime = function(){
     var d = new Date(this);
     d.setHours(0, 0, 0, 0, 0);
     return d
+}
+
+const getReleaseData = function(id) {
+    Meteor.call('discogs.getReleaseData', id);
+    var query = Alerts.find({userId: Meteor.userId(), status: 'releaseUpdated'});
+    var handle = query.observeChanges({
+        added: function(){
+            Meteor.call('clearAlerts', {userId: Meteor.userId()});
+            runReleaseSearch();
+        }
+    });
+}
+
+const updateUsersFavoritesData = function(){
+    var favorites = Releases.find({userId: Meteor.userId(), hearted: true});
+    favorites.forEach(function(release){
+        getReleaseData(release._id);
+    });
 }

@@ -83,12 +83,17 @@
     color: #9f857f;
 }
 .sales_info {
-    color: #f31;
+    color: #c51;
     float: right;
     position: relative;
-    left: 52px;
+    left: 82px;
     top: -38px;
     cursor: default;
+    min-width: 60px;
+}
+.copies {
+    color: #931;
+    margin-right: 0.9rem;
 }
 .invisible {
     display: none;
