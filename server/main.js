@@ -143,7 +143,7 @@ Meteor.methods({
         db.getRelease(release.discogsId, Meteor.bindEnvironment(function(err, data){
             // console.log(err);
             // console.log(data);
-            if (data) {
+            if (data && data.num_for_sale) {
                 var forSale = data.num_for_sale;
                 var price = Math.round(data.lowest_price * 100) / 100;
                 var date = new Date();
