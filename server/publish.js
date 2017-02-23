@@ -17,3 +17,7 @@ Meteor.publish('releases', function() {
 Meteor.publish('updatedReleases', function() {
     return UpdatedReleases.find({userId: this.userId});
 });
+
+Meteor.publish('currentUser', function() {
+    return Meteor.users.find({userId: this.userId});
+});

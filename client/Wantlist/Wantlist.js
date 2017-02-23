@@ -11,6 +11,7 @@ Template.Wantlist.onCreated(function() {
     Meteor.subscribe('updatedReleases');
     Meteor.subscribe('exchangeRates');
     Meteor.subscribe('userAlerts');
+    Meteor.subscribe('currentUser');
 });
 
 Template.Wantlist.events({
@@ -35,8 +36,8 @@ Template.Wantlist.events({
 Template.SearchResult.events({
     'click .header_item'(event){
         const clickedSort = event.target.firstChild.data;
-        const userSort = Meteor.user().profile.wantlistSorting.slice(0, -1);
-        let arrow = Meteor.user().profile.wantlistSorting.slice(-1);
+        const userSort = getCurrentSorting().slice(0, -1);
+        let arrow = getCurrentSorting().slice(-1);
         arrow = (clickedSort === userSort && arrow === '▼') ? '▲' : '▼';
         const sortText = event.target.firstChild.data + arrow;
         Meteor.users.update(Meteor.userId(), {$set: {'profile.wantlistSorting': sortText}}, function(){
@@ -107,12 +108,12 @@ Template.SearchResult.helpers({
         });
     },
     selectedSort(type){
-        const userSort = Meteor.user().profile.wantlistSorting.slice(0, -1);
+        const userSort = getCurrentSorting().slice(0, -1);
         return (userSort === type) ? 'selected_sort' : ''
     },
     selectedArrow(type){
-        const userSort = Meteor.user().profile.wantlistSorting.slice(0, -1);
-        const arrow = Meteor.user().profile.wantlistSorting.slice(-1);
+        const userSort = getCurrentSorting().slice(0, -1);
+        const arrow = getCurrentSorting().slice(-1);
         return (userSort === type) ? arrow : ''
     },
     heartIcon(){
@@ -167,8 +168,12 @@ const buildRegExp = function(searchText) {
     return new RegExp("(" + parts.join('|') + ")", "ig");
 }
 
+const getCurrentSorting = function() {
+  return Meteor.user().profile.wantlistSorting || "Added▼";
+}
+
 const getWantlistSorting = function() {
-    const sorting = Meteor.user().profile.wantlistSorting || "Added▼";
+    const sorting = getCurrentSorting();
     const userSort = sorting.slice(0, -1);
     const arrow = sorting.slice(-1);
     const factor = (arrow === '▲') ? 1 : -1;
