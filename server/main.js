@@ -157,6 +157,7 @@ Meteor.methods({
     'getExchangeRates'(){
         var rates = new OpenExchangeRates(Meteor.settings.exchangeKey);
         rates.latest(function(err, result){
+            console.log(err, result);
             var today = new Date().withoutTime();
             ExchangeRates.upsert({date: today}, {$set: {GBP: result.rates.GBP, EUR: result.rates.EUR }});
         });

@@ -134,8 +134,7 @@ Template.SearchResult.helpers({
         return this.hearted ? 'sales_info' : 'invisible';
     },
     calcPrice(){
-        const today = new Date().withoutTime();
-        const rate = ExchangeRates.findOne({date: today});
+        const rate = ExchangeRates.findOne({}, {sort: {date: -1, limit: 1}});
         const price = Math.round(this.lowestPriceUSD * rate.GBP);
         return price
     }
