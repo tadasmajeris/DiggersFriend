@@ -3,4 +3,4 @@ Meteor.JS project using Discogs API.
 
 Import your wantlist from Discogs, mark items you want most, get notifications about new listings
 
-![DiggersFriend](https://www.dropbox.com/scl/fi/jzcye7mrd6p7trf1dh0os/DiggersFriend.png?rlkey=9h2v62wygsed06kg2ns7qywb1&st=qvwzsz0v&dl=0)
+![DiggersFriend](https://previews.dropbox.com/p/thumb/AC_JpvKifUof39-kv7bxblK8AFvWpyzLXCDOPniNU7LfDMVEwM1GYAWfh4ea1G54_kt9oQbLwlZEJZ-Bk22_9QqeUyti6WlbBYMOKM0HxAKq57-lSe7IG72DRMkRTJsF7htDNzxeSB1lEBQW6i6O9H_d3cAIUWbbCT1lMadjZLnBiDvqSRGofFkXj9iMdz73UzG0Pf2UsVjtySEx2HzEHRkNaQuRmcwDri9bi6eFxTnTjKK6DJK8OQoCaS363REs1IE_lzNP2mQcSUaIjvDanPTPy55-B41ou6jdMbUsLRKckpOpcQDnK54_tzyyez0bGtw/p.png?is_prewarmed=true)
